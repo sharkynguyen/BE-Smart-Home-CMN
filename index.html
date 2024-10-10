@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+
+<body>
+    <h2>WebSocket Test</h2>
+    <button onclick="connect()">Connect</button>
+    <div id="messages"></div>
+
+    <script>
+        let socket;
+
+        function connect() {
+            // Connect to your WebSocket endpoint
+            socket = new WebSocket("ws://smarthomecmn.vercel.app/ws/sensor");
+
+            socket.onopen = function (e) {
+                console.log("Connection established");
+                document.getElementById("messages").innerHTML += `<p>Connection established</p>`;
+            };
+
+            socket.onmessage = function (event) {
+                // Display the received data from the WebSocket
+                document.getElementById("messages").innerHTML += `<p>Data: ${event.data}</p>`;
+                console.log(`Data received: ${event.data}`);
+            };
+
+            socket.onerror = function (error) {
+                console.log(`Error: ${error.message}`);
+                document.getElementById("messages").innerHTML += `<p>Error: ${error.message}</p>`;
+            };
+
+            socket.onclose = function (event) {
+                if (event.wasClean) {
+                    console.log('Connection closed cleanly');
+                    document.getElementById("messages").innerHTML += `<p>Connection closed cleanly</p>`;
+                } else {
+                    console.log('Connection closed unexpectedly');
+                    document.getElementById("messages").innerHTML += `<p>Connection closed unexpectedly</p>`;
+                }
+            };
+        }
+    </script>
+</body>
+
+</html>
