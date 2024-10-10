@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pydantic
+adafruit-io
+pydantic
+
+python-dotenv
+
+websockets
+
+pymongo
+certifi
+asyncpg
+
+pytest
