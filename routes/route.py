@@ -169,24 +169,24 @@ async def get_motors():
 
 #############################################################################
 
-@router.websocket("/ws/sensor")
+@router.websocket("/sensor")
 async def sensor_websocket(websocket: WebSocket):
     await websocket.accept()
     try:
         async for dataSensor in sensor_stream_data():
             print(f"Insert sensor success {dataSensor}")
-            temp, humidity = dataSensor.split("-")
-            temp = int(temp)
-            humidity = int(humidity)
+            # temp, humidity = dataSensor.split("-")
+            # temp = int(temp)
+            # humidity = int(humidity)
 
-            sensor = SensorModel(
-                name=id,
-                description=id,
-                temp=temp,
-                humidity=humidity,
-                updated_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+            # sensor = SensorModel(
+            #     name=id,
+            #     description=id,
+            #     temp=temp,
+            #     humidity=humidity,
+            #     updated_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
 
-            sensor_collection().insert_one(dict(sensor))
+            # sensor_collection().insert_one(dict(sensor))
 
             print(f"Insert sensor success")
             await websocket.send_text(dataSensor)
