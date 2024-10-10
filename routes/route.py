@@ -175,13 +175,13 @@ async def sensor_websocket(websocket: WebSocket):
     try:
         async for dataSensor in sensor_stream_data():
             print(f"Insert sensor success {dataSensor}")
-            temp, humidity = dataSensor.split("-")
-            temp = int(temp)
-            humidity = int(humidity)
+            temp_str, humidity_str = dataSensor.split("-")
+            temp = int(temp_str)
+            humidity = int(humidity_str)
 
             sensor = SensorModel(
-                name=id,
-                description=id,
+                name='sensor',
+                description='sensor',
                 temp=temp,
                 humidity=humidity,
                 updated_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))

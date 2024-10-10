@@ -119,5 +119,7 @@ def get_sensor():
 
 async def sensor_stream_data():
     while True:
-        yield f"{last_temperature}-{last_humidity}"
+        data = f"{last_temperature}-{last_humidity}"
+        print(f"Yielding data: {data}")
+        yield data
         await asyncio.sleep(5)
