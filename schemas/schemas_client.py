@@ -2,7 +2,6 @@ from Adafruit_IO import Client, Feed
 import os
 from Adafruit_IO import MQTTClient
 import sys
-import asyncio
 from models.senor import SensorModel
 from datetime import datetime
 from dotenv import load_dotenv
@@ -17,9 +16,8 @@ IO_FEED_USERNAME = os.getenv('IO_FEED_USERNAME')
 IO_Led1_FEED_USERNAME = os.getenv('IO_Led1_FEED_USERNAME')
 IO_Led2_FEED_USERNAME = os.getenv('IO_Led2_FEED_USERNAME')
 IO_Motor_FEED_USERNAME = os.getenv('IO_Motor_FEED_USERNAME')
-
-last_temperature = '0'
-last_humidity = '0'
+IO_Light_FEED_USERNAME = os.getenv('IO_Light_FEED_USERNAME')
+IO_Mask_Detection_FEED_USERNAME = os.getenv('IO_Mask_Detection_FEED_USERNAME')
 
 def mqqt_client():
     mqttClient = MQTTClient(ADAFRUIT_AIO_USERNAME, ADAFRUIT_AIO_KEY)
@@ -39,6 +37,12 @@ def adfruit_client():
 
 def update_led(client, id: str, data: int):
     mqqt_client().publish(id, data, IO_FEED_USERNAME)
+
+def update_light(client, id: str, data: int):
+    mqqt_client().publish(id, data, IO_FEED_USERNAME)
+
+def update_mask_detection(client, id: str, data: int):
+    mqqt_client().publish(IO_Mask_Detection_FEED_USERNAME, data, IO_FEED_USERNAME)
 
 def update_motor(client, id: str, data: int):
     mqqt_client().publish(id, data, IO_FEED_USERNAME)
@@ -67,8 +71,6 @@ def unsubscribe(client):
     sys.exit(1)
 
 def message(client, feed_id, payload):
-    global last_temperature
-    global last_humidity
 
     if feed_id == IO_Led1_FEED_USERNAME:
         print(f"LED1 Feed has new value: {payload}")
@@ -77,11 +79,13 @@ def message(client, feed_id, payload):
     elif feed_id == IO_Motor_FEED_USERNAME:
         print(f"Motor has new value: {payload}")
     elif feed_id == ID_Temperature_FEED:
-        last_temperature = payload
         print(f"Temperature has new value: {payload}")
     elif feed_id == ID_Humidity_FEED:
-        last_humidity = payload
         print(f"Humidity has new value: {payload}")
+    elif feed_id == IO_Light_FEED_USERNAME:
+        print(f"Light has new value: {payload}")
+    elif feed_id == IO_Mask_Detection_FEED_USERNAME:
+        print(f"Mask Detection has new value: {payload}")
 
     else:
         print(f"Feed {feed_id} received new value: {payload}")
@@ -117,9 +121,3 @@ def get_sensor():
 
     return sensor
 
-async def sensor_stream_data():
-    while True:
-        data = f"{last_temperature}-{last_humidity}"
-        print(f"Yielding data: {data}")
-        yield data
-        await asyncio.sleep(5)

@@ -26,6 +26,16 @@ def toJsonSensor(sensor) -> dict:
         'updated_time': str(sensor['updated_time']),
     }
 
+def toJsonHeartOxygen(sensor) -> dict:
+    return {
+        'id': str(sensor['_id']),
+        'name': str(sensor['name']),
+        'description': str(sensor['description']),
+        'heart': int(sensor['heart']),
+        'oxygen': int(sensor['oxygen']),
+        'updated_time': str(sensor['updated_time']),
+    }
+
 
 def get_led_collection(leds) -> list:
     return [toJsonLed(led) for led in leds]
@@ -34,6 +44,9 @@ def get_motor_collection(motors) -> list:
     return [toJsonMotor(motor) for motor in motors]
 
 def get_sensor_collection(sensorData) -> list:
+    return [toJsonSensor(data) for data in sensorData]
+
+def get_heart_oxygen_collection(sensorData) -> list:
     return [toJsonSensor(data) for data in sensorData]
 
 

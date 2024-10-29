@@ -1,9 +1,10 @@
 from fastapi import APIRouter, status, WebSocket
+from models.heart_oxygen import HeartOxyGen
 from schemas.schemas_db import get_led_collection, get_motor_collection, get_sensor_collection
 from models.senor import SensorModel
 from models.motor import MotorModel
-from config.database import led_collection, motor_collection, sensor_collection
-from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor, sensor_stream_data, update_led, update_motor
+from config.database import heartOxygen_collection, led_collection, motor_collection, sensor_collection
+from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
 from bson import ObjectId
 from models.led import LedModel
 
@@ -104,6 +105,18 @@ async def update_motor_data(id: str, data: int):
         'data': data
     }
 
+@router.put('/feed/light',status_code=status.HTTP_200_OK)
+async def update_light_data(id: str, data: int):
+    update_light(mqttClient, id, data)
+
+    return {
+        'status_code': status.HTTP_200_OK,
+        'msg': 'updated data',
+        '_id': id,
+        'data': data
+    }
+
+
 #############################################################################
 
 @router.post('/feed/led', status_code=status.HTTP_200_OK)
@@ -130,6 +143,16 @@ async def insert_motor_document(motor: MotorModel):
 async def insert_sensor_document(sensor: SensorModel):
 
     sensor_collection().insert_one(dict(sensor))
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+    }
+
+@router.post('/feed/heart_beat_oxygen', status_code=status.HTTP_200_OK)
+async def insert_heart_oxygen_document(heartOxygen: HeartOxyGen):
+
+    heartOxygen_collection().insert_one(dict(heartOxygen))
 
     return {
         'status_code': 200,
@@ -168,29 +191,3 @@ async def get_motors():
     }
 
 #############################################################################
-
-@router.websocket("/sensor")
-async def sensor_websocket(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        async for dataSensor in sensor_stream_data():
-            print(f"Insert sensor success {dataSensor}")
-            temp_str, humidity_str = dataSensor.split("-")
-            temp = int(temp_str)
-            humidity = int(humidity_str)
-
-            sensor = SensorModel(
-                name='sensor',
-                description='sensor',
-                temp=temp,
-                humidity=humidity,
-                updated_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-
-            sensor_collection().insert_one(dict(sensor))
-
-            print(f"Insert sensor success")
-            await websocket.send_text(dataSensor)
-    except Exception as e:
-        print(f"Connection closed with exception: {e}")
-    finally:
-        await websocket.close()

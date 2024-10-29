@@ -36,6 +36,11 @@ def motor_collection():
     return motor_collection
 
 def sensor_collection():
-    motor_collection = mongo_db['sensor_collection']
+    sensor_collection = mongo_db['sensor_collection']
 
-    return motor_collection
+    return sensor_collection
+
+def heartOxygen_collection():
+    heart_Oxygen_collection = mongo_db['heart_oxygen']
+
+    return heart_Oxygen_collection
