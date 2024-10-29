@@ -5,7 +5,7 @@ now = datetime.now()
 class HeartOxyGen(BaseModel):
     name: str
     description: str
-    heart: int
-    oxygen: int
+    heart: float
+    oxygen: float
     updated_time: str
 
