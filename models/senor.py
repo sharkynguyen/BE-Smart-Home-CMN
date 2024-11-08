@@ -5,7 +5,7 @@ now = datetime.now()
 class SensorModel(BaseModel):
     name: str
     description: str
-    temp: int
-    humidity: int
+    temp: float
+    humidity: float
     updated_time: str
 
