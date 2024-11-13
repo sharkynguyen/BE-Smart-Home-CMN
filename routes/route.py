@@ -180,6 +180,15 @@ async def get_motors():
         'data': motors
     }
 
+@router.get('/feed/advice', status_code=status.HTTP_200_OK)
+async def get_motors(hr: float, oxygen: float):
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+        'data': 'Keep oxygen stable, gradually reduce heart rate'
+    }
+
 @router.get('/feed/sensors', status_code=status.HTTP_200_OK)
 async def get_motors():
     sensorData = get_sensor_collection(sensor_collection().find())
