@@ -31,8 +31,8 @@ def toJsonHeartOxygen(sensor) -> dict:
         'id': str(sensor['_id']),
         'name': str(sensor['name']),
         'description': str(sensor['description']),
-        'heart': int(sensor['heart']),
-        'oxygen': int(sensor['oxygen']),
+        'heart': float(sensor['heart']),
+        'oxygen': float(sensor['oxygen']),
         'updated_time': str(sensor['updated_time']),
     }
 
@@ -47,6 +47,6 @@ def get_sensor_collection(sensorData) -> list:
     return [toJsonSensor(data) for data in sensorData]
 
 def get_heart_oxygen_collection(sensorData) -> list:
-    return [toJsonSensor(data) for data in sensorData]
+    return [toJsonHeartOxygen(data) for data in sensorData]
 
 

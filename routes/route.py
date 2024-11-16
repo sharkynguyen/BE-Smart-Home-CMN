@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, WebSocket
 from models.heart_oxygen import HeartOxyGen
-from schemas.schemas_db import get_led_collection, get_motor_collection, get_sensor_collection
+from schemas.schemas_db import get_heart_oxygen_collection, get_led_collection, get_motor_collection, get_sensor_collection
 from models.senor import SensorModel
 from models.motor import MotorModel
 from config.database import heartOxygen_collection, led_collection, motor_collection, sensor_collection
@@ -178,6 +178,16 @@ async def get_motors():
         'status_code': 200,
         'msg': 'success',
         'data': motors
+    }
+
+@router.get('/feed/heart_oxygen', status_code=status.HTTP_200_OK)
+async def get_heart_oxygen():
+    heartOxygenData = get_heart_oxygen_collection(heartOxygen_collection().find())
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+        'data': heartOxygenData
     }
 
 @router.get('/feed/advice', status_code=status.HTTP_200_OK)
