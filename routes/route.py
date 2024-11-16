@@ -1,11 +1,11 @@
 from fastapi import APIRouter, status, WebSocket
+from models.advice import AdviceModel
 from models.heart_oxygen import HeartOxyGen
 from schemas.schemas_db import get_heart_oxygen_collection, get_led_collection, get_motor_collection, get_sensor_collection
 from models.senor import SensorModel
 from models.motor import MotorModel
-from config.database import heartOxygen_collection, led_collection, motor_collection, sensor_collection
+from config.database import advice_collection, heartOxygen_collection, led_collection, motor_collection, sensor_collection
 from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
-from bson import ObjectId
 from models.led import LedModel
 
 from datetime import datetime
@@ -191,7 +191,16 @@ async def get_heart_oxygen():
     }
 
 @router.get('/feed/advice', status_code=status.HTTP_200_OK)
-async def get_motors(hr: float, oxygen: float):
+async def get_advice(hr: float, oxygen: float):
+
+    advice = AdviceModel(
+        msg='Keep oxygen stable, gradually reduce heart rate',
+        heart=hr,
+        oxygen=oxygen,
+        updated_time=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+    )
+
+    advice_collection().insert_one(dict(advice))
 
     return {
         'status_code': 200,

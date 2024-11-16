@@ -44,3 +44,14 @@ def heartOxygen_collection():
     heart_Oxygen_collection = mongo_db['heart_oxygen']
 
     return heart_Oxygen_collection
+
+
+def advice_collection():
+    advice = mongo_db['advices']
+
+    return advice
+
+def personal_information_collection():
+    advice = mongo_db['personal_information']
+
+    return advice
