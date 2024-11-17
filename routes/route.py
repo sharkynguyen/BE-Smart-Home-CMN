@@ -1,10 +1,11 @@
 from fastapi import APIRouter, status, WebSocket
 from models.advice import AdviceModel
 from models.heart_oxygen import HeartOxyGen
-from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collection, get_led_collection, get_motor_collection, get_sensor_collection
+from models.personal_info import PersonalInfo
+from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collection, get_led_collection, get_motor_collection, get_personal_collection, get_sensor_collection
 from models.senor import SensorModel
 from models.motor import MotorModel
-from config.database import advice_collection, heartOxygen_collection, led_collection, motor_collection, sensor_collection
+from config.database import advice_collection, heartOxygen_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
 from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
 from models.led import LedModel
 
@@ -159,6 +160,18 @@ async def insert_heart_oxygen_document(heartOxygen: HeartOxyGen):
         'msg': 'success',
     }
 
+@router.post('/feed/personal_info', status_code=status.HTTP_200_OK)
+async def updatePersonalInfo(info: PersonalInfo):
+    personal_information_collection().delete_many({})
+
+    personal_information_collection().insert_one(dict(info))
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+    }
+
+
 #############################################################################
 @router.get('/feed/leds', status_code=status.HTTP_200_OK)
 async def get_leds():
@@ -216,6 +229,16 @@ async def get_advices():
         'status_code': 200,
         'msg': 'success',
         'data': advices
+    }
+
+@router.get('/feed/personal', status_code=status.HTTP_200_OK)
+async def getPersonalInfo():
+    personal_info =  get_personal_collection(personal_information_collection().find())
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+        'data': personal_info
     }
 
 @router.get('/feed/sensors', status_code=status.HTTP_200_OK)

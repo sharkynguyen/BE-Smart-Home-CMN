@@ -45,6 +45,17 @@ def toJsonAdvice(sensor) -> dict:
         'updated_time': str(sensor['updated_time']),
     }
 
+def toJsonPersonalInfo(sensor) -> dict:
+    return {
+        'id': str(sensor['_id']),
+        'age': str(sensor['age']),
+        'gender': str(sensor['gender']),
+        'heartDesease': str(sensor['heartDesease']),
+        'otherDease': str(sensor['otherDease']),
+        'heart': float(sensor['heart']),
+        'oxygen': float(sensor['oxygen']),
+    }
+
 def get_led_collection(leds) -> list:
     return [toJsonLed(led) for led in leds]
 
@@ -59,3 +70,9 @@ def get_heart_oxygen_collection(sensorData) -> list:
 
 def get_advice_collection(sensorData) -> list:
     return [toJsonAdvice(data) for data in sensorData]
+
+def get_personal_info_collection(sensorData) -> list:
+    return [toJsonPersonalInfo(data) for data in sensorData]
+
+def get_personal_collection(sensorData) -> list:
+    return [toJsonPersonalInfo(data) for data in sensorData]

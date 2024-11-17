@@ -3,8 +3,6 @@ from pymongo.server_api import ServerApi
 
 import certifi
 
-
-
 def mongo_client():
     uri =  "mongodb+srv://admin:Sharky_01675@cluster0.ze83k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
