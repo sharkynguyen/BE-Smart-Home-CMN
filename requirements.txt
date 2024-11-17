@@ -3,6 +3,7 @@ uvicorn
 pydantic
 adafruit-io
 pydantic
+# google-generativeai
 
 python-dotenv
 

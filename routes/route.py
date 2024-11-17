@@ -6,9 +6,8 @@ from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collectio
 from models.senor import SensorModel
 from models.motor import MotorModel
 from config.database import advice_collection, heartOxygen_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
-from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
+from schemas.schemas_client import generateAdvice, get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
 from models.led import LedModel
-
 from datetime import datetime
 
 router = APIRouter()
@@ -17,6 +16,7 @@ mqttClient = mqqt_client()
 @router.get('/', status_code=status.HTTP_202_ACCEPTED)
 async def connect():
     mqqt_client()
+
 
     return {
         'status_code': status.HTTP_202_ACCEPTED,
@@ -205,21 +205,31 @@ async def get_heart_oxygen():
 
 @router.get('/feed/advice', status_code=status.HTTP_200_OK)
 async def get_advice(hr: float, oxygen: float):
+    if hr == 0 or oxygen == 0:
+        return {
+            'status_code': 200,
+            'msg': 'success',
+            'data': 'thinking...',
+        }
+    else:
+        personal_info =  get_personal_collection(personal_information_collection().find())
 
-    advice = AdviceModel(
-        msg='Keep oxygen stable, gradually reduce heart rate',
-        heart=hr,
-        oxygen=oxygen,
-        updated_time=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
-    )
+        msg =  generateAdvice(personal_info, hr, oxygen)
 
-    advice_collection().insert_one(dict(advice))
+        advice = AdviceModel(
+            msg=msg,
+            heart=hr,
+            oxygen=oxygen,
+            updated_time=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+        )
 
-    return {
-        'status_code': 200,
-        'msg': 'success',
-        'data': 'Keep oxygen stable, gradually reduce heart rate'
-    }
+        advice_collection().insert_one(dict(advice))
+
+        return {
+            'status_code': 200,
+            'msg': 'success',
+            'data': msg,
+        }
 
 @router.get('/feed/advices', status_code=status.HTTP_200_OK)
 async def get_advices():

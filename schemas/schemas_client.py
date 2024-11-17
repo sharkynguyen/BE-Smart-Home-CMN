@@ -2,9 +2,12 @@ from Adafruit_IO import Client, Feed
 import os
 from Adafruit_IO import MQTTClient
 import sys
+from models.personal_info import PersonalInfo
 from models.senor import SensorModel
 from datetime import datetime
 from dotenv import load_dotenv
+import google.generativeai as genai
+import os
 
 load_dotenv()
 
@@ -18,8 +21,11 @@ IO_Led2_FEED_USERNAME = os.getenv('IO_Led2_FEED_USERNAME')
 IO_Motor_FEED_USERNAME = os.getenv('IO_Motor_FEED_USERNAME')
 IO_Light_FEED_USERNAME = os.getenv('IO_Light_FEED_USERNAME')
 IO_Mask_Detection_FEED_USERNAME = os.getenv('IO_Mask_Detection_FEED_USERNAME')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 def mqqt_client():
+    genai.configure(api_key=GEMINI_API_KEY)
+
     mqttClient = MQTTClient(ADAFRUIT_AIO_USERNAME, ADAFRUIT_AIO_KEY)
 
     mqttClient.on_connect       =   connected
@@ -120,4 +126,23 @@ def get_sensor():
         )
 
     return sensor
+
+def generateAdvice(info: str, hr: float, oxygen: float) -> str:
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
+    # Format the prompt
+    prompt = (
+        f"I need advice about my health in about 10 words. "
+        f"Personal Information: {info}. "
+        f"Heart rate: {hr}. Oxygen level: {oxygen}."
+    )
+
+    # Generate response
+    try:
+        response = model.generate_content(prompt)
+        print(response.text)
+        return response.text
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return "Unable to generate advice at this time."
 
