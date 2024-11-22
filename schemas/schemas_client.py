@@ -24,7 +24,7 @@ IO_Mask_Detection_FEED_USERNAME = os.getenv('IO_Mask_Detection_FEED_USERNAME')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 def mqqt_client():
-    genai.configure(api_key=GEMINI_API_KEY)
+    # genai.configure(api_key=GEMINI_API_KEY)
 
     mqttClient = MQTTClient(ADAFRUIT_AIO_USERNAME, ADAFRUIT_AIO_KEY)
 
