@@ -22,6 +22,7 @@ IO_Motor_FEED_USERNAME = os.getenv('IO_Motor_FEED_USERNAME')
 IO_Light_FEED_USERNAME = os.getenv('IO_Light_FEED_USERNAME')
 IO_Mask_Detection_FEED_USERNAME = os.getenv('IO_Mask_Detection_FEED_USERNAME')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 def mqqt_client():
     # genai.configure(api_key=GEMINI_API_KEY)
@@ -127,7 +128,9 @@ def get_sensor():
 
     return sensor
 
-# def generateAdvice(info: str, hr: float, oxygen: float) -> str:
+def generateAdvice(info: str, hr: float, oxygen: float) -> str:
+    return "Hieu dep trai sieu cap vu tru"
+
 #     model = genai.GenerativeModel("gemini-1.5-flash")
 
 #     # Format the prompt

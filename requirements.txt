@@ -5,6 +5,7 @@ adafruit-io
 pydantic
 # google-generativeai
 
+
 python-dotenv
 
 websockets
