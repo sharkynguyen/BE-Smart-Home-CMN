@@ -6,7 +6,7 @@ from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collectio
 from models.senor import SensorModel
 from models.motor import MotorModel
 from config.database import advice_collection, heartOxygen_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
-from schemas.schemas_client import generateAdvice, get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
+from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
 from models.led import LedModel
 from datetime import datetime
 
@@ -203,33 +203,33 @@ async def get_heart_oxygen():
         'data': heartOxygenData
     }
 
-@router.get('/feed/advice', status_code=status.HTTP_200_OK)
-async def get_advice(hr: float, oxygen: float):
-    if hr == 0 or oxygen == 0:
-        return {
-            'status_code': 200,
-            'msg': 'success',
-            'data': 'thinking...',
-        }
-    else:
-        personal_info =  get_personal_collection(personal_information_collection().find())
+# @router.get('/feed/advice', status_code=status.HTTP_200_OK)
+# async def get_advice(hr: float, oxygen: float):
+#     if hr == 0 or oxygen == 0:
+#         return {
+#             'status_code': 200,
+#             'msg': 'success',
+#             'data': 'thinking...',
+#         }
+#     else:
+#         personal_info =  get_personal_collection(personal_information_collection().find())
 
-        msg =  generateAdvice(personal_info, hr, oxygen)
+#         msg =  generateAdvice(personal_info, hr, oxygen)
 
-        advice = AdviceModel(
-            msg=msg,
-            heart=hr,
-            oxygen=oxygen,
-            updated_time=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
-        )
+#         advice = AdviceModel(
+#             msg=msg,
+#             heart=hr,
+#             oxygen=oxygen,
+#             updated_time=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+#         )
 
-        advice_collection().insert_one(dict(advice))
+#         advice_collection().insert_one(dict(advice))
 
-        return {
-            'status_code': 200,
-            'msg': 'success',
-            'data': msg,
-        }
+#         return {
+#             'status_code': 200,
+#             'msg': 'success',
+#             'data': msg,
+#         }
 
 @router.get('/feed/advices', status_code=status.HTTP_200_OK)
 async def get_advices():
