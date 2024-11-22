@@ -135,6 +135,7 @@ def generateAdvice(info: str, hr: float, oxygen: float) -> str:
         f"I need advice about my health in about 10 words. "
         f"Personal Information: {info}. "
         f"Heart rate: {hr}. Oxygen level: {oxygen}."
+        f"I am doing exercise"
     )
 
     # Generate response
