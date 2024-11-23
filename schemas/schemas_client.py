@@ -6,7 +6,7 @@ from models.personal_info import PersonalInfo
 from models.senor import SensorModel
 from datetime import datetime
 from dotenv import load_dotenv
-# import google.generativeai as genai
+import google.generativeai as genai
 import os
 
 load_dotenv()
@@ -25,7 +25,7 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 def mqqt_client():
-    # genai.configure(api_key=GEMINI_API_KEY)
+    genai.configure(api_key=GEMINI_API_KEY)
 
     mqttClient = MQTTClient(ADAFRUIT_AIO_USERNAME, ADAFRUIT_AIO_KEY)
 
