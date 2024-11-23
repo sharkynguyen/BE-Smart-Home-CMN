@@ -49,6 +49,11 @@ def advice_collection():
 
     return advice
 
+def lastest_advice_collection():
+    lastest_advice = mongo_db['lastest_advices']
+
+    return lastest_advice
+
 def personal_information_collection():
     advice = mongo_db['personal_information']
 

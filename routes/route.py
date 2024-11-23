@@ -2,10 +2,10 @@ from fastapi import APIRouter, status, WebSocket
 from models.advice import AdviceModel
 from models.heart_oxygen import HeartOxyGen
 from models.personal_info import PersonalInfo
-from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collection, get_led_collection, get_motor_collection, get_personal_collection, get_sensor_collection
+from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collection, get_lastest_advice_collection, get_led_collection, get_motor_collection, get_personal_collection, get_sensor_collection
 from models.senor import SensorModel
 from models.motor import MotorModel
-from config.database import advice_collection, heartOxygen_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
+from config.database import advice_collection, heartOxygen_collection, lastest_advice_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
 from schemas.schemas_client import generateAdvice, get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
 from models.led import LedModel
 from datetime import datetime
@@ -171,6 +171,16 @@ async def updatePersonalInfo(info: PersonalInfo):
         'msg': 'success',
     }
 
+@router.post('/feed/lastest_advice', status_code=status.HTTP_200_OK)
+async def updateLastestAdvice(advice: AdviceModel):
+    lastest_advice_collection().delete_many({})
+
+    lastest_advice_collection().insert_one(dict(advice))
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+    }
 
 #############################################################################
 @router.get('/feed/leds', status_code=status.HTTP_200_OK)
@@ -212,23 +222,15 @@ async def get_advice(hr: float, oxygen: float):
             'data': 'thinking...',
         }
     else:
-        personal_info =  get_personal_collection(personal_information_collection().find())
 
-        msg =  generateAdvice(personal_info, hr, oxygen)
+        lastestAdvice = get_lastest_advice_collection(lastest_advice_collection().find())
 
-        advice = AdviceModel(
-            msg=msg,
-            heart=hr,
-            oxygen=oxygen,
-            updated_time=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
-        )
-
-        advice_collection().insert_one(dict(advice))
+        advice_collection().insert_one(dict(lastestAdvice[0]))
 
         return {
             'status_code': 200,
             'msg': 'success',
-            'data': msg,
+            'data': lastestAdvice[0],
         }
 
 @router.get('/feed/advices', status_code=status.HTTP_200_OK)

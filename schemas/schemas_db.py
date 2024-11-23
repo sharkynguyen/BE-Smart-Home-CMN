@@ -75,6 +75,9 @@ def get_heart_oxygen_collection(sensorData) -> list:
 def get_advice_collection(sensorData) -> list:
     return [toJsonAdvice(data) for data in sensorData]
 
+def get_lastest_advice_collection(sensorData) -> list:
+    return [toJsonAdvice(data) for data in sensorData]
+
 def get_personal_info_collection(sensorData) -> list:
     return [toJsonPersonalInfo(data) for data in sensorData]
 
