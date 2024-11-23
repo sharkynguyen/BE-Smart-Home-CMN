@@ -54,6 +54,10 @@ def toJsonPersonalInfo(sensor) -> dict:
         'otherDease': str(sensor['otherDease']),
         'heart': float(sensor['heart']),
         'oxygen': float(sensor['oxygen']),
+        'weight': float(sensor['weight']),
+        'height': float(sensor['height']),
+        'isPlayingSports': bool(sensor['isPlayingSports']),
+        'sport': str(sensor['sport']),
     }
 
 def get_led_collection(leds) -> list:
