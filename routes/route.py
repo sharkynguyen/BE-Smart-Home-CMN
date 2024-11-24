@@ -173,9 +173,7 @@ async def updatePersonalInfo(info: PersonalInfo):
 
 @router.post('/feed/lastest_advice', status_code=status.HTTP_200_OK)
 async def updateLastestAdvice(advice: AdviceModel):
-    lastest_advice_collection().delete_many({})
-
-    lastest_advice_collection().insert_one(dict(advice))
+    lastest_advice_collection().replace_one({}, dict(advice), upsert=True)
 
     return {
         'status_code': 200,
