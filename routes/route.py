@@ -1,11 +1,12 @@
 from fastapi import APIRouter, status, WebSocket
 from models.advice import AdviceModel
+from models.energy import EnergyModel
 from models.heart_oxygen import HeartOxyGen
 from models.personal_info import PersonalInfo
 from schemas.schemas_db import get_advice_collection, get_heart_oxygen_collection, get_lastest_advice_collection, get_led_collection, get_motor_collection, get_personal_collection, get_sensor_collection
 from models.senor import SensorModel
 from models.motor import MotorModel
-from config.database import advice_collection, heartOxygen_collection, lastest_advice_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
+from config.database import advice_collection, energy_collection, heartOxygen_collection, lastest_advice_collection, led_collection, motor_collection, personal_information_collection, sensor_collection
 from schemas.schemas_client import generateAdvice, get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_led, update_light, update_motor
 from models.led import LedModel
 from datetime import datetime
@@ -178,6 +179,17 @@ async def updateLastestAdvice(advice: AdviceModel):
     return {
         'status_code': 200,
         'msg': 'success',
+    }
+
+
+@router.post('/energy', status_code=status.HTTP_200_OK)
+async def insertEnergyPoint(energy: EnergyModel):
+    energy_collection().insert_one(dict(energy))
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+        'data': energy
     }
 
 #############################################################################

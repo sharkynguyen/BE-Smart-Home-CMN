@@ -1,3 +1,6 @@
+from models.energy import EnergyModel
+
+
 def toJsonLed(led) -> dict:
     return {
         'id': str(led['_id']),
@@ -60,6 +63,18 @@ def toJsonPersonalInfo(sensor) -> dict:
         'sport': str(sensor['sport']),
     }
 
+
+def toJsonEnergyModel(energy_model: EnergyModel) -> dict:
+    return {
+        'vMin': energy_model.vMin,
+        'vMax': energy_model.vMax,
+        'l': energy_model.l,
+        'temperatureFan': energy_model.temperatureFan,
+        'temperatureMax': energy_model.temperatureMax,
+        'updated_time': energy_model.updated_time,
+    }
+
+
 def get_led_collection(leds) -> list:
     return [toJsonLed(led) for led in leds]
 
@@ -83,3 +98,6 @@ def get_personal_info_collection(sensorData) -> list:
 
 def get_personal_collection(sensorData) -> list:
     return [toJsonPersonalInfo(data) for data in sensorData]
+
+def get_energy_collection(sensorData) -> list:
+    return [toJsonEnergyModel(data) for data in sensorData]

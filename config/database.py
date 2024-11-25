@@ -58,3 +58,8 @@ def personal_information_collection():
     advice = mongo_db['personal_information']
 
     return advice
+
+def energy_collection():
+    energy = mongo_db['energy']
+
+    return energy
