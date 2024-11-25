@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class EnergyModel(BaseModel):
+class EnergyInModel(BaseModel):
     vMin: float
     vMax: float
     l: float

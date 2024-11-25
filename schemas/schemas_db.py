@@ -1,4 +1,5 @@
-from models.energy import EnergyModel
+from models.energy_in import EnergyInModel
+from models.engergy_out import EnergyOutModel
 
 
 def toJsonLed(led) -> dict:
@@ -64,16 +65,28 @@ def toJsonPersonalInfo(sensor) -> dict:
     }
 
 
-def toJsonEnergyModel(energy_model: EnergyModel) -> dict:
+def toJsonEnergyInModel(energy_model: EnergyInModel) -> dict:
     return {
-        'vMin': energy_model.vMin,
-        'vMax': energy_model.vMax,
-        'l': energy_model.l,
-        'temperatureFan': energy_model.temperatureFan,
-        'temperatureMax': energy_model.temperatureMax,
-        'updated_time': energy_model.updated_time,
+        'id': str(energy_model['_id']),
+        'vMin': float(energy_model['vMin']),
+        'vMax': float(energy_model['vMax']),
+        'l': float(energy_model['l']),
+        'temperatureFan': float(energy_model['temperatureFan']),
+        'temperatureMax': float(energy_model['temperatureMax']),
+        'updated_time': str(energy_model['updated_time']),
     }
 
+def toJsonEnergyOutModel(energy_out_model: EnergyOutModel) -> dict:
+    return {
+        'vIn': float(energy_out_model['vIn']),
+        'vOut': float(energy_out_model['vOut']),
+        'iIn': float(energy_out_model['iIn']),
+        'iOut': float(energy_out_model['iOut']),
+        'pOut': float(energy_out_model['pOut']),
+        'pIn': float(energy_out_model['pIn']),
+        'temperature': float(energy_out_model['temperature']),
+        'updated_time': str(energy_out_model['updated_time']),
+    }
 
 def get_led_collection(leds) -> list:
     return [toJsonLed(led) for led in leds]
@@ -99,5 +112,8 @@ def get_personal_info_collection(sensorData) -> list:
 def get_personal_collection(sensorData) -> list:
     return [toJsonPersonalInfo(data) for data in sensorData]
 
-def get_energy_collection(sensorData) -> list:
-    return [toJsonEnergyModel(data) for data in sensorData]
+def get_energy_in_collection(sensorData) -> list:
+    return [toJsonEnergyInModel(data) for data in sensorData]
+
+def get_energy_out_collection(sensorData) -> list:
+    return [toJsonEnergyOutModel(data) for data in sensorData]

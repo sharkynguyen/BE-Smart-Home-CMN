@@ -59,7 +59,12 @@ def personal_information_collection():
 
     return advice
 
-def energy_collection():
-    energy = mongo_db['energy']
+def energy_in_collection():
+    energy = mongo_db['energy_in']
+
+    return energy
+
+def energy_out_collection():
+    energy = mongo_db['energy_out']
 
     return energy
