@@ -2,7 +2,6 @@ from Adafruit_IO import Client, Feed
 import os
 from Adafruit_IO import MQTTClient
 import sys
-from models.personal_info import PersonalInfo
 from models.senor import SensorModel
 from datetime import datetime
 from dotenv import load_dotenv
@@ -42,7 +41,7 @@ def adfruit_client():
     client = Client(ADAFRUIT_AIO_USERNAME, ADAFRUIT_AIO_KEY)
     return client
 
-def update_led(client, id: str, data: int):
+def update_device(client, id: str, data: int):
     mqqt_client().publish(id, data, IO_FEED_USERNAME)
 
 def update_light(client, id: str, data: int):
@@ -127,26 +126,3 @@ def get_sensor():
         )
 
     return sensor
-
-def generateAdvice(info: str, hr: float, oxygen: float) -> str:
-    return "Hieu dep trai sieu cap vu tru"
-
-#     model = genai.GenerativeModel("gemini-1.5-flash")
-
-#     # Format the prompt
-#     prompt = (
-#         f"I need advice about my health in about 10 words. "
-#         f"Personal Information: {info}. "
-#         f"Heart rate: {hr}. Oxygen level: {oxygen}."
-#         f"I am doing exercise"
-#     )
-
-#     # Generate response
-#     try:
-#         response = model.generate_content(prompt)
-#         print(response.text)
-#         return response.text
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
-#         return "Unable to generate advice at this time."
-

@@ -23,41 +23,15 @@ def my_db():
 
 mongo_db = my_db()
 
-def led_collection():
-    led_collection = mongo_db['led_collection']
+def device_collection():
+    device_collection = mongo_db['device_collection']
 
-    return led_collection
-
-def motor_collection():
-    motor_collection = mongo_db['motor_collection']
-
-    return motor_collection
+    return device_collection
 
 def sensor_collection():
     sensor_collection = mongo_db['sensor_collection']
 
     return sensor_collection
-
-def heartOxygen_collection():
-    heart_Oxygen_collection = mongo_db['heart_oxygen']
-
-    return heart_Oxygen_collection
-
-
-def advice_collection():
-    advice = mongo_db['advices']
-
-    return advice
-
-def lastest_advice_collection():
-    lastest_advice = mongo_db['lastest_advices']
-
-    return lastest_advice
-
-def personal_information_collection():
-    advice = mongo_db['personal_information']
-
-    return advice
 
 def energy_in_collection():
     energy = mongo_db['energy_in']
