@@ -40,6 +40,8 @@ def toJsonEnergyOutModel(energy_out_model: EnergyOutModel) -> dict:
         'pOut': float(energy_out_model['pOut']),
         'pIn': float(energy_out_model['pIn']),
         'temperature': float(energy_out_model['temperature']),
+        'batPercent': float(energy_out_model['batPercent']),
+        'whP': float(energy_out_model['whP']),
         'updated_time': str(energy_out_model['updated_time']),
     }
 

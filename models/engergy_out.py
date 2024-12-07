@@ -5,10 +5,12 @@ from typing import Optional
 class EnergyOutModel(BaseModel):
     vIn: float
     vOut: float
-    iIn: float
-    iOut: float
-    pOut: float
+    cIn: float
+    cOut: float
     pIn: float
+    pOut: float
     temperature: float
+    batPercent: float
+    whP: float
     updated_time: str
 
