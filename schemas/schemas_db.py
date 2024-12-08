@@ -1,5 +1,6 @@
 from models.energy_in import EnergyInModel
 from models.engergy_out import EnergyOutModel
+from models.message import MessageModel
 
 def toJsonDevice(device) -> dict:
     return {
@@ -45,6 +46,13 @@ def toJsonEnergyOutModel(energy_out_model: EnergyOutModel) -> dict:
         'updated_time': str(energy_out_model['updated_time']),
     }
 
+def toJsonMessageModel(message: MessageModel) -> dict:
+    return {
+        'role': int(message['role']),
+        'message': str(message['message']),
+        'updated_time': str(message['updated_time']),
+    }
+
 def get_device_collection(devices) -> list:
     return [toJsonDevice(device) for device in devices]
 
@@ -56,3 +64,6 @@ def get_energy_in_collection(sensorData) -> list:
 
 def get_energy_out_collection(sensorData) -> list:
     return [toJsonEnergyOutModel(data) for data in sensorData]
+
+def get_message_collection(messages) -> list:
+    return [toJsonMessageModel(data) for data in messages]

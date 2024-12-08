@@ -42,3 +42,8 @@ def energy_out_collection():
     energy = mongo_db['energy_out']
 
     return energy
+
+def message_collection():
+    message = mongo_db['message']
+
+    return message

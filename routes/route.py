@@ -1,9 +1,10 @@
 from fastapi import APIRouter, status, WebSocket
 from models.energy_in import EnergyInModel
 from models.engergy_out import EnergyOutModel
-from schemas.schemas_db import  get_device_collection, get_energy_in_collection, get_energy_out_collection, get_sensor_collection, toJsonEnergyInModel, toJsonEnergyOutModel
+from models.message import MessageModel
+from schemas.schemas_db import  get_device_collection, get_energy_in_collection, get_energy_out_collection, get_message_collection, get_sensor_collection, toJsonEnergyInModel, toJsonEnergyOutModel
 from models.senor import SensorModel
-from config.database import device_collection, energy_in_collection, energy_out_collection, sensor_collection
+from config.database import device_collection, energy_in_collection, energy_out_collection, message_collection, sensor_collection
 from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_device, update_light, update_motor
 from models.device import DeviceModel
 from datetime import datetime
@@ -86,6 +87,16 @@ async def get_energ_in():
         'data': data,
     }
 
+@router.get('/messages', status_code=status.HTTP_200_OK)
+async def get_messages():
+    data = get_message_collection(message_collection().find())
+
+    return {
+        'status_code': status.HTTP_200_OK,
+        'msg': 'success',
+        'data': data,
+    }
+
 @router.get('/energy_out', status_code=status.HTTP_200_OK)
 async def get_energ_out():
     data = get_energy_out_collection(energy_out_collection().find())
@@ -148,6 +159,16 @@ async def insert_sensor_document(sensor: SensorModel):
     return {
         'status_code': 200,
         'msg': 'success',
+    }
+
+@router.post('/message', status_code=status.HTTP_200_OK)
+async def insertMessage(message: MessageModel):
+    message_collection().insert_one(dict(message))
+
+    return {
+        'status_code': 200,
+        'msg': 'success',
+        'data': message
     }
 
 @router.post('/energy_in', status_code=status.HTTP_200_OK)
