@@ -8,6 +8,18 @@ from config.database import device_collection, energy_in_collection, energy_out_
 from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_device, update_light, update_motor
 from models.device import DeviceModel
 from datetime import datetime
+import numpy as np
+from tensorflow.python.keras.models import load_model
+from tensorflow.python.keras.layers import LSTM, Dense
+import joblib
+from fastapi import FastAPI, HTTPException
+from schemas.schemas_model import FirePredictionInput
+
+
+model = load_model('fire_prediction_model.h5')
+
+scaler = joblib.load('scaler.pkl')
+
 
 router = APIRouter()
 mqttClient = mqqt_client()
@@ -214,3 +226,24 @@ async def get_motors():
     }
 
 #############################################################################
+
+@router.post("/predict", status_code=status.HTTP_200_OK)
+def predict_fire(data: FirePredictionInput):
+    try:
+        # Convert input data to numpy array
+        input_data = np.array([[data.temp, data.RH]])
+
+        # Apply the same scaling as during training
+        input_data_scaled = scaler.transform(input_data)
+
+        # Predict using the model
+        prediction = model.predict(input_data_scaled)
+        probability = float(prediction[0][0])
+
+        # Return 1 if probability >= 0.5, otherwise 0
+        fire = 1 if probability >= 0.5 else 0
+
+        return {"fire": fire, "probability": probability}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error processing input: {e}")
+
