@@ -36,8 +36,8 @@ def toJsonEnergyOutModel(energy_out_model: EnergyOutModel) -> dict:
     return {
         'vIn': float(energy_out_model['vIn']),
         'vOut': float(energy_out_model['vOut']),
-        'iIn': float(energy_out_model['iIn']),
-        'iOut': float(energy_out_model['iOut']),
+        'cIn': float(energy_out_model['cIn']),
+        'cOut': float(energy_out_model['cOut']),
         'pOut': float(energy_out_model['pOut']),
         'pIn': float(energy_out_model['pIn']),
         'temperature': float(energy_out_model['temperature']),
@@ -45,6 +45,7 @@ def toJsonEnergyOutModel(energy_out_model: EnergyOutModel) -> dict:
         'whP': float(energy_out_model['whP']),
         'updated_time': str(energy_out_model['updated_time']),
     }
+
 
 def toJsonMessageModel(message: MessageModel) -> dict:
     return {
