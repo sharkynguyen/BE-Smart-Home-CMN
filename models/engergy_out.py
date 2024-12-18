@@ -9,8 +9,8 @@ class EnergyOutModel(BaseModel):
     cOut: float
     pIn: float
     pOut: float
-    temperature: float
+    tempearturePl1: float
     batPercent: float
-    whP: float
+    whp: float
     updated_time: str
 
