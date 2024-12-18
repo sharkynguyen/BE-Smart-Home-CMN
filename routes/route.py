@@ -8,8 +8,6 @@ from config.database import device_collection, energy_in_collection, energy_out_
 from schemas.schemas_client import get_name_of_all_feeds, get_sensor, mqqt_client, get_led, get_motor,  update_device, update_light, update_motor
 from models.device import DeviceModel
 from datetime import datetime
-import numpy as np
-
 
 router = APIRouter()
 mqttClient = mqqt_client()
